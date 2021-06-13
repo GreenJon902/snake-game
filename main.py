@@ -1,3 +1,4 @@
+import random
 import sys
 import time
 
@@ -12,6 +13,7 @@ DISPLAY = pygame.display.set_mode(window_size, 0, 32)
 
 snake_poses = initial_snake_poses
 snake_direction = initial_snake_direction
+food_pos = "no"
 
 
 def draw():
@@ -24,6 +26,12 @@ def draw():
             y = sy * square_size + sy * square_gap + square_gap
 
             pygame.draw.rect(DISPLAY, square_color, (x, y, square_size, square_size))
+
+
+    pygame.draw.rect(DISPLAY, food_color, (food_pos[0] * square_size + food_pos[0] * square_gap + square_gap,
+                                            food_pos[1] * square_size + food_pos[1] * square_gap + square_gap,
+                                            square_size, square_size))
+
 
     for pos in snake_poses:
         pygame.draw.rect(DISPLAY, snake_color, (pos[0] * square_size + pos[0] * square_gap + square_gap,
@@ -51,6 +59,17 @@ def move_snake():
 
     snake_poses.pop(0)
     snake_poses.append(new_pos)
+
+
+def check_food():
+    global food_pos
+
+    if food_pos == "no":
+        food_pos = [random.randint(0, horizontal_square_amount), random.randint(0, vertical_square_amount)]
+
+    if snake_poses[len(snake_poses) - 1] == food_pos:
+        food_pos = [random.randint(0, horizontal_square_amount), random.randint(0, vertical_square_amount)]
+        snake_poses.append(snake_poses[len(snake_poses) - 1])
 
 
 snake_movement_timer = 0.0
@@ -84,4 +103,5 @@ while True:
 
     time_before = time.time()
 
+    check_food()
     draw()

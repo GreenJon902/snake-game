@@ -2,6 +2,7 @@
 background_color = (50, 50, 50)
 square_color = (70, 70, 70)
 snake_color = (255, 0, 0)
+food_color = (0, 255, 0)
 
 # Sizes
 square_size = 45
