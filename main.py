@@ -82,13 +82,13 @@ def check_food():
         print("Spawned food at", food_pos)
 
 
-snake_movement_timer = 0.0
+update_timer = 0.0
 time_before = time.time()
 while True:
     time_after = time.time()
-    snake_movement_timer += time_after - time_before
+    update_timer += time_after - time_before
 
-    if snake_movement_timer >= snake_movement_time:
+    if update_timer >= update_time:
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -109,7 +109,7 @@ while True:
                     snake_direction = "r"
 
         move_snake()
-        snake_movement_timer = 0
+        update_timer = 0
 
     time_before = time.time()
 
