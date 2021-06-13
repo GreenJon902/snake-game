@@ -1,7 +1,8 @@
 import sys
+import time
 
 import pygame
-from pygame import QUIT, KEYDOWN, K_ESCAPE
+from pygame import QUIT, KEYDOWN, K_ESCAPE, K_w, K_a, K_s, K_d
 
 from static_vars import *
 
@@ -9,7 +10,7 @@ pygame.init()
 
 DISPLAY = pygame.display.set_mode(window_size, 0, 32)
 
-snake_pos = initial_snake_pos
+snake_pos = list(initial_snake_pos)
 snake_direction = initial_snake_direction
 
 
@@ -31,6 +32,15 @@ def draw():
     pygame.display.update()
 
 
+def move_snake():
+    global snake_pos
+
+    snake_pos[0] += snake_movement[snake_direction][0]
+    snake_pos[1] += snake_movement[snake_direction][1]
+
+
+snake_movement_timer = 0.0
+time_before = time.time()
 while True:
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -42,4 +52,22 @@ while True:
                 pygame.quit()
                 sys.exit()
 
-        draw()
+            elif event.key == K_w and snake_direction != "d":
+                snake_direction = "u"
+            elif event.key == K_a and snake_direction != "r":
+                snake_direction = "l"
+            elif event.key == K_s and snake_direction != "u":
+                snake_direction = "d"
+            elif event.key == K_d and snake_direction != "l":
+                snake_direction = "r"
+
+
+    time_after = time.time()
+    snake_movement_timer += time_after - time_before
+    if snake_movement_timer >= snake_movement_time:
+        move_snake()
+        snake_movement_timer = 0
+
+    time_before = time.time()
+
+    draw()
