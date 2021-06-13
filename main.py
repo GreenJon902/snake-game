@@ -38,6 +38,16 @@ def move_snake():
     snake_pos[0] += snake_movement[snake_direction][0]
     snake_pos[1] += snake_movement[snake_direction][1]
 
+    if snake_pos[0] < 0:
+        snake_pos[0] = horizontal_square_amount - 1
+    elif snake_pos[0] > horizontal_square_amount - 1:
+        snake_pos[0] = 0
+
+    if snake_pos[1] < 0:
+        snake_pos[1] = vertical_square_amount - 1
+    elif snake_pos[1] > vertical_square_amount - 1:
+        snake_pos[1] = 0
+
 
 snake_movement_timer = 0.0
 time_before = time.time()
