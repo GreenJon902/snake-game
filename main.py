@@ -10,6 +10,7 @@ from static_vars import *
 pygame.init()
 
 DISPLAY = pygame.display.set_mode(window_size, 0, 32)
+pygame.display.set_caption("Snake - GreenJon902")
 
 snake_poses = initial_snake_poses
 snake_direction = initial_snake_direction
