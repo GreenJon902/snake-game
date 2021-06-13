@@ -60,44 +60,54 @@ def move_snake():
     snake_poses.pop(0)
     snake_poses.append(new_pos)
 
+    for i, pos in enumerate(snake_poses):
+        if pos == snake_poses[len(snake_poses) - 1] and i != len(snake_poses) - 1:
+            print("Died at", pos)
+            pygame.quit()
+            sys.exit()
+
 
 def check_food():
     global food_pos
 
     if food_pos == "no":
-        food_pos = [random.randint(0, horizontal_square_amount), random.randint(0, vertical_square_amount)]
+        food_pos = [random.randint(0, horizontal_square_amount - 1), random.randint(0, vertical_square_amount - 1)]
+
+        print("Spawned food at", food_pos)
 
     if snake_poses[len(snake_poses) - 1] == food_pos:
-        food_pos = [random.randint(0, horizontal_square_amount), random.randint(0, vertical_square_amount)]
+        food_pos = [random.randint(0, horizontal_square_amount - 1), random.randint(0, vertical_square_amount - 1)]
         snake_poses.append(snake_poses[len(snake_poses) - 1])
+
+        print("Spawned food at", food_pos)
 
 
 snake_movement_timer = 0.0
 time_before = time.time()
 while True:
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
+    time_after = time.time()
+    snake_movement_timer += time_after - time_before
 
-        elif event.type == KEYDOWN:
-            if event.key == K_ESCAPE:
+    if snake_movement_timer >= snake_movement_time:
+        for event in pygame.event.get():
+            if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
 
-            elif event.key == K_w and snake_direction != "d":
-                snake_direction = "u"
-            elif event.key == K_a and snake_direction != "r":
-                snake_direction = "l"
-            elif event.key == K_s and snake_direction != "u":
-                snake_direction = "d"
-            elif event.key == K_d and snake_direction != "l":
-                snake_direction = "r"
+            elif event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
 
+                elif event.key == K_w and snake_direction != "d":
+                    snake_direction = "u"
+                elif event.key == K_a and snake_direction != "r":
+                    snake_direction = "l"
+                elif event.key == K_s and snake_direction != "u":
+                    snake_direction = "d"
+                elif event.key == K_d and snake_direction != "l":
+                    snake_direction = "r"
 
-    time_after = time.time()
-    snake_movement_timer += time_after - time_before
-    if snake_movement_timer >= snake_movement_time:
         move_snake()
         snake_movement_timer = 0
 
