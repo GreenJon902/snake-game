@@ -10,7 +10,7 @@ pygame.init()
 
 DISPLAY = pygame.display.set_mode(window_size, 0, 32)
 
-snake_pos = list(initial_snake_pos)
+snake_poses = initial_snake_poses
 snake_direction = initial_snake_direction
 
 
@@ -25,28 +25,32 @@ def draw():
 
             pygame.draw.rect(DISPLAY, square_color, (x, y, square_size, square_size))
 
-    pygame.draw.rect(DISPLAY, snake_color, (snake_pos[0] * square_size + snake_pos[0] * square_gap + square_gap,
-                                            snake_pos[1] * square_size + snake_pos[1] * square_gap + square_gap,
-                                            square_size, square_size))
-
+    for pos in snake_poses:
+        pygame.draw.rect(DISPLAY, snake_color, (pos[0] * square_size + pos[0] * square_gap + square_gap,
+                                                pos[1] * square_size + pos[1] * square_gap + square_gap,
+                                                square_size, square_size))
     pygame.display.update()
 
 
 def move_snake():
-    global snake_pos
+    global snake_poses
+    new_pos = snake_poses[len(snake_poses) - 1].copy()
 
-    snake_pos[0] += snake_movement[snake_direction][0]
-    snake_pos[1] += snake_movement[snake_direction][1]
+    new_pos[0] += snake_movement[snake_direction][0]
+    new_pos[1] += snake_movement[snake_direction][1]
 
-    if snake_pos[0] < 0:
-        snake_pos[0] = horizontal_square_amount - 1
-    elif snake_pos[0] > horizontal_square_amount - 1:
-        snake_pos[0] = 0
+    if new_pos[0] < 0:
+        new_pos[0] = horizontal_square_amount - 1
+    elif new_pos[0] > horizontal_square_amount - 1:
+        new_pos[0] = 0
 
-    if snake_pos[1] < 0:
-        snake_pos[1] = vertical_square_amount - 1
-    elif snake_pos[1] > vertical_square_amount - 1:
-        snake_pos[1] = 0
+    if new_pos[1] < 0:
+        new_pos[1] = vertical_square_amount - 1
+    elif new_pos[1] > vertical_square_amount - 1:
+        new_pos[1] = 0
+
+    snake_poses.pop(0)
+    snake_poses.append(new_pos)
 
 
 snake_movement_timer = 0.0
