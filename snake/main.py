@@ -3,7 +3,7 @@ import sys
 import time
 
 import pygame
-from pygame import QUIT, KEYDOWN, K_ESCAPE, K_w, K_a, K_s, K_d
+from pygame.constants import *
 
 from static_vars import *
 
